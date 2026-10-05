@@ -1,0 +1,152 @@
+<Window x:Class="BeaconAudioRC.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Beacon Audio Remote Control" Height="650" Width="1024"
+        WindowStartupLocation="CenterScreen" Background="#0F0F12" UseLayoutRounding="True">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="AccentColor" Color="#00BCF2"/>
+        <SolidColorBrush x:Key="CardBackground" Color="#1E1E24"/>
+        <SolidColorBrush x:Key="CardHoverBackground" Color="#282830"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#A0A0AB"/>
+
+        <Style x:Key="ModernCircleButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#33333D"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="50" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource CardHoverBackground}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#0078D4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="EqPillStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" 
+                                BorderBrush="#33333D" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource AccentColor}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentColor}"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="BEACON" Foreground="{StaticResource AccentColor}" FontSize="28" FontWeight="Black" LetterSpacing="2"/>
+                <TextBlock Text=" AUDIO" Foreground="{StaticResource TextPrimary}" FontSize="28" FontWeight="Light" LetterSpacing="2"/>
+            </StackPanel>
+
+            <Border HorizontalAlignment="Right" Background="#1E1E24" BorderBrush="#33333D" BorderThickness="1" CornerRadius="15" Padding="12,6">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse x:Name="StatusDot" Width="10" Height="10" Fill="#FF3B30" Margin="0,0,8,0"/>
+                    <TextBlock x:Name="TxtStatus" Text="Déconnecté" Foreground="{StaticResource TextSecondary}" FontSize="14" FontWeight="Medium"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <Grid.ColumnDefinition Width="2.5*"/>
+                <Grid.ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{StaticResource CardBackground}" BorderBrush="#2A2A35" BorderThickness="1" CornerRadius="24" Margin="0,0,15,0" Padding="25">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button x:Name="BtnPrev" Content="⏮" Width="80" Height="80" FontSize="30" Margin="15" Style="{StaticResource ModernCircleButton}" Click="BtnPrev_Click"/>
+                        <Button x:Name="BtnPlayPause" Content="▶" Width="110" Height="110" FontSize="42" Foreground="Black" Background="{StaticResource AccentColor}" Margin="15" Style="{StaticResource ModernCircleButton}" Click="BtnPlayPause_Click"/>
+                        <Button x:Name="BtnNext" Content="⏭" Width="80" Height="80" FontSize="30" Margin="15" Style="{StaticResource ModernCircleButton}" Click="BtnNext_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0,20,0,0">
+                        <TextBlock Text="PRÉRÉGLAGES ÉGALISEUR" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold" LetterSpacing="1" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Flat" IsChecked="True" Style="{StaticResource EqPillStyle}" Click="EqPreset_Click" Tag="0"/>
+                            <RadioButton Content="Bass Boost" Style="{StaticResource EqPillStyle}" Click="EqPreset_Click" Tag="1"/>
+                            <RadioButton Content="Vocal" Style="{StaticResource EqPillStyle}" Click="EqPreset_Click" Tag="2"/>
+                            <RadioButton Content="Clear Studio" Style="{StaticResource EqPillStyle}" Click="EqPreset_Click" Tag="3"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Background="{StaticResource CardBackground}" BorderBrush="#2A2A35" BorderThickness="1" CornerRadius="24" Margin="15,0,0,0" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="VOLUME" Foreground="{StaticResource TextSecondary}" FontSize="12" FontWeight="Bold" LetterSpacing="1" HorizontalAlignment="Center" Margin="0,10,0,15"/>
+
+                    <Slider Grid.Row="1" x:Name="SldVolume" Orientation="Vertical" Minimum="0" Maximum="100" Value="65" 
+                            Width="40" HorizontalAlignment="Center" ValueChanged="SldVolume_ValueChanged"/>
+
+                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,15,0,5">
+                        <TextBlock x:Name="TxtVolume" Text="65%" Foreground="{StaticResource TextPrimary}" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Niveau sonore" Foreground="{StaticResource TextSecondary}" FontSize="11" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Button Grid.Row="2" x:Name="BtnConnect" Content="Connecter via Bluetooth" Height="65" FontSize="18" FontWeight="SemiBold"
+                Foreground="White" Background="#0078D4" Margin="0,15,0,0" Click="BtnConnect_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="16"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </Grid>
+</Window>
